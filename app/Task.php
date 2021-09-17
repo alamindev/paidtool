@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
 
-    protected $fillable = ['title','description','is_sent','package_id','type','url'];
+    protected $fillable = ['title','description','is_sent','package_id','type','url','time'];
     
     public function package()
     {

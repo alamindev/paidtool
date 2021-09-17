@@ -17,7 +17,7 @@
             </div>
             <div class="col l6 m6 s6 right-align">
                 @if(Auth::user()->isAdmin())
-                    <a href="{{route('addtask')}}" class="waves-effect waves-light btn green">New Task</a>
+                    <a href="{{route('addurltask')}}" class="waves-effect waves-light btn green">New Task</a>
                 @endif
             </div>
         </div>
@@ -27,20 +27,15 @@
             <div class="row">
                 
                 <div class="col s12">
-                    <div class="">
-                                        <p class="font-bold " style="color: red;"><br>
-                                        # Please follow the youtube link to know how to do the task and get paid
-                                        - <a href="https://www.youtube.com/watch?v=eLloPoLxB4g" target="_blank">https://www.youtube.com/watch?v=tonDqYp_KMw</a><br>
-                                        
-                                    </div>
+                
                     <ul class="tabs">
                         
                     @if(Auth::user()->isAdmin())
                     
-                        <li class="tab col s3"><a href="#TasksReplied" class="active">Tasks Replied</a></li>
+                        <li class="tab col s3"><a href="#TasksReplied" class="active">Tasks</a></li>
                     @else
                         <li class="tab col s3"><a class="active" href="#TasksSent">My Tasks</a></li>
-                        <li class="tab col s3"><a href="#TasksReplied">Tasks Replied</a></li>
+                        <li class="tab col s3"><a href="#TasksCompleted">Tasks completed</a></li>
                     @endif
                         
                     </ul>
@@ -133,13 +128,8 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Title</th>
-                                        <th>Description</th>
-                                        <th>Package</th>
-                                        @if(!Auth::user()->isAdmin())
-                                            <th>Replied</th>
-                                            <th>Accepted</th>
-                                        @endif
+                                        <th>Url</th> 
+                                        <th>Package</th> 
                                         <th>Created Date</th>
                                         <th>Updated Date</th>
                                         <th>Action</th>
@@ -150,90 +140,24 @@
                                     @if(!Auth::user()->isAdmin())
                                         @foreach($tasksSent ?? '' as $task)
                                             @if($task->pivot->is_replied != 1)
-                                                <tr>
-                                                    <td>
-                                                        @if($task->type == 0)
-                                                        <div class="chip">
-                                                            <img src="https://ui-avatars.com/api/?background=273146&color=fff&size=128&name={{$task->title}}" alt="Contact Person"> {{ $task->title }}
-                                                        </div>
-                                                        @else
-                                                        ---
-                                                        @endif
-                                                    </td>
-                                                    @if($task->type == 0)
-                                                        <td title="{{$task->description}}">{{ substr($task->description, 0, 20) }}...</td>
-                                                    @else
-                                                    <td title="{{$task->url}}">{{ substr($task->url, 0, 20) }}...</td>
-                                                    @endif
+                                                <tr>  
+                                                    <td title="{{$task->url}}">{{ substr($task->url, 0, 40) }}...</td> 
                                                     <td>
                                                         <span class="label label-info">{{$task->package->package_name}}</span>
-                                                    </td>
-                                                        @if($task->type == 0)
-                                                            @if($task->pivot->is_replied == 1)
-                                                                <td><span class="label label-warning">Replied</span></td>
-                                                            @else
-                                                            <td><span class="label label-danger">Not Replied</span></td>
-                                                            @endif
-                                                        @else
-                                                        <td>---</td>
-                                                        @endif
-                                                     @if($task->type == 0)   
-                                                        @if($task->pivot->is_accepted == 1)
-                                                            <td><span class="label label-success">Yes</span></td>
-                                                        @else
-                                                        <td><span class="label label-danger">No</span></td>
-                                                        @endif
-                                                    @else
-                                                    
-                                                    <td>---</td>
-                                                    @endif
+                                                    </td> 
                                                     <td>{{$task->created_at->diffForHumans()}}</td>
                                                     <td>{{$task->updated_at->diffForHumans()}}</td>
                                                 
                                                         <td class="blue-grey-text d-flex text-darken-4 font-medium"> 
-                                                            @if($task->pivot->is_accepted == 0)
-                                                                @if($task->type == 0)   
-                                                                    <a href="{{route('task.addreply',$task->id)}}" class="waves-effect waves-light btn blue">Add Reply</a>
-                                                                @else
-                                                                <a href="{{route('task.visitUrl',$task->id)}}" class="waves-effect waves-light btn blue">Visit the URL</a>
-                                                                @endif  
+                                                            @if($task->pivot->is_accepted == 0) 
+                                                                <a href="{{route('task.visitUrl',$task->id)}}" class="waves-effect waves-light btn blue">Visit the URL</a> 
                                                                 <a  class="waves-effect waves-light btn red" href={{"deletetask/". $task->id}} >Delete</a>
-                                                            @endif
-                                                            @if($task->pivot->is_replied == 1)
-                                                                <a href="{{route('task.showReply',$task->id)}}" class="waves-effect waves-light btn green m-l-5">View Replies</a>
-                                                                
-                                                            @endif
+                                                            @endif 
                                                         </td>
                                                 </tr>
                                             @endif
                                         @endforeach
-                                    @endif
-
-                                    @if(Auth::user()->isAdmin())
-                                        @foreach($tasksSent ?? '' as $task)
-                                            <tr>
-                                                <td>
-                                                    <div class="chip">
-                                                        <img src="https://ui-avatars.com/api/?background=273146&color=fff&size=128&name={{$task->title}}" alt="Contact Person"> {{ $task->title }}
-                                                    </div>
-                                                </td>
-                                                <td title="{{$task->description}}">{{ substr($task->description, 0, 20) }}...</td>
-                                                <td>
-                                                    <span class="label label-info">{{$task->package->package_name}}</span>
-                                                </td>
-
-                                                <td>{{$task->created_at->diffForHumans()}}</td>
-                                                <td>{{$task->updated_at->diffForHumans()}}</td>
-                                            
-                                                <td width="10%" class="blue-grey-text d-flex text-darken-4 font-medium"> 
-                                                    <a href="/task/edit/{{$task->id}}" class="link m-auto align-items-center justify-content-center"><i title="Edit" class="material-icons font-20 m-r-5">edit</i></a>
-                                                    <a href="/task/delete/{{$task->id}}" class="link m-auto align-items-center justify-content-center"><i title="Delete" class="material-icons font-20 m-r-5">delete</i></a>
-                                                    <a href="{{route('task.showReply',$task->id)}}" class="link m-auto align-items-center justify-content-center"><i title="View Replies" class="fas fa-eye"></i></a>
-                                                </td>
-
-                                            </tr>
-                                        @endforeach
-                                    @endif
+                                    @endif 
                                 </tbody>
                             </table>
                             {{ $tasksSent ?? ''->links() }}
@@ -244,194 +168,74 @@
                         </div>
                     @endif
                 </div>
-                <div id="TasksReplied" class="col s12">
-                    @if(count($tasksReplied))
-                        @if(Auth::user()->isAdmin())
-                            <br>
-                            <button id="select-all" class="waves-effect waves-light btn blue">Select All</button>
-                            <button class="waves-effect waves-light btn green" onClick="acceptSelected()">Accept</button>
-                            <button class="waves-effect waves-light btn red" onClick="rejectSelected()">Reject</button>
-                        @endif
+                @if(Auth::user()->isAdmin()) 
+                <div id="TasksReplied" class="col s12"> 
                         <div class="table-responsive">
                             <table>
                                 <thead>
-                                    <tr>
-                                        @if(Auth::user()->isAdmin())
-                                            <td>
-                                            </td>
-                                        @endif
-                                        <th>Title</th>
-                                        <th>Description</th>
-                                        <th>Package</th>
-                                        @if(!Auth::user()->isAdmin())
-                                            <th>Replied</th>
-                                            <th>Accepted</th>
-                                        @else
-                                            <th>Replies</th>
-                                        @endif
+                                    <tr> 
+                                        <th>Url</th> 
+                                        <th>Package</th> 
+                                        <th>Time</th> 
                                         <th>Created Date</th>
                                         <th>Updated Date</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($tasksReplied as $task)
-                                    <tr>
-                                        @if(Auth::user()->isAdmin())
-                                            <td>
-                                                <input type="checkbox" data-id="{{ $task->id }}" class="filled-in taskReplies" name="tasksSelected" style="position: inherit; opacity: 1;" />
-                                            </td>
-                                        @endif
-                                        <td>
-                                            @if($task->type == 0)
-                                                <div class="chip">
-                                                    <img src="https://ui-avatars.com/api/?background=273146&color=fff&size=128&name={{$task->title}}" alt="Contact Person"> {{ $task->title }}
-                                                </div>
-                                            @else
-                                            ---
-                                            @endif 
-                                        </td>
-                                        @if($task->type == 0)
-                                            <td title="{{$task->description}}">{{ substr($task->description, 0, 20) }}...</td>
-                                        @else
-                                            <td title="{{$task->url}}">{{ substr($task->url, 0, 20) }}...</td>
-                                        @endif 
+                                    @foreach($tasks as $task)
+                                    <tr>   
+                                        <td title="{{$task->url}}">{{ substr($task->url, 0, 40) }}...</td> 
                                         <td>
                                             <span class="label label-info">{{$task->package->package_name}}</span>
-                                        </td>
-
-                                        @if(!Auth::user()->isAdmin())
-                                            @if($task->pivot->is_replied == 1)
-                                                <td><span class="label label-warning">Replied</span></td>
-                                            @else
-                                                <td><span class="label label-danger">Not Replied</span></td>
-                                            @endif
-                                            
-                                            @if($task->pivot->is_accepted == 1)
-                                                <td><span class="label label-success">Yes</span></td>
-                                            @else
-                                                <td><span class="label label-danger">No</span></td>
-                                            @endif
-                                        @else
-                                            <td><span class="label cyan">{{ $task->replies_count }} Replies</span></td>
-                                        @endif
+                                        </td> 
+                                        <td>{{$task->time }}</td>
                                         <td>{{$task->created_at->diffForHumans()}}</td>
                                         <td>{{$task->updated_at->diffForHumans()}}</td>
                                         @if(Auth::user()->isAdmin())
                                             <td width="10%" class="blue-grey-text d-flex text-darken-4 font-medium"> 
-                                                <a href="/task/edit/{{$task->id}}" class="link m-auto align-items-center justify-content-center"><i title="Edit" class="material-icons font-20 m-r-5">edit</i></a>
-                                                <a href="/task/delete/{{$task->id}}" class="link m-auto align-items-center justify-content-center"><i title="Delete" class="material-icons font-20 m-r-5">delete</i></a>
-                                                <a href="{{route('task.showReply',$task->id)}}" class="link m-auto align-items-center justify-content-center"><i title="View Replies" class="fas fa-eye"></i></a>
-                                            </td>
-                                        @else
-                                        @if($task->type == 0)
-                                            <td class="blue-grey-text d-flex text-darken-4 font-medium"> 
-                                                @if($task->pivot->is_accepted == 0)
-                                                    <a href="{{route('task.addreply',$task->id)}}" class="waves-effect waves-light btn blue">Add Reply</a>
-                                                     
-                                                @endif
-                                                @if($task->pivot->is_replied == 1)
-                                                    <a href="{{route('task.showReply',$task->id)}}" class="waves-effect waves-light btn green m-l-5">View Replies</a>
-                                                    
-                                                @endif
-                                            </td>
-                                         @else
-                                            <td>---</td>
-                                        @endif
+                                                <a href="/task/url/edit/{{$task->id}}" class="link m-auto align-items-center justify-content-center"><i title="Edit" class="material-icons font-20 m-r-5">edit</i></a>
+                                                <a href="/task/delete/{{$task->id}}" class="link m-auto align-items-center justify-content-center"><i title="Delete" class="material-icons font-20 m-r-5">delete</i></a> 
+                                            </td> 
                                         @endif
                                     </tr>
                                     @endforeach
                                 </tbody>
                             </table>  
-                        </div>
-                    @else
-                        <div class="card p-40 center">
-                            <h4>No Records Found</h4>
-                        </div>
-                    @endif
+                            {{ $tasks->links() }}
+                        </div> 
                 </div>
-                @if(Auth::user()->isAdmin()) 
-                <div id="TasksAccepted" class="col s12" style="display:none">
-                    @if(count($tasksAccepted))
+                @endif 
+                @if(!Auth::user()->isAdmin()) 
+                <div id="TasksCompleted" class="col s12"> 
                         <div class="table-responsive">
                             <table>
                                 <thead>
-                                    <tr>
-                                        <th>Title</th>
-                                        <th>Description</th>
-                                        <th>Package</th>
-                                        @if(!Auth::user()->isAdmin())
-                                            <th>Replied</th>
-                                            <th>Accepted</th>
-                                        @else
-                                            <th>Status</th>
-                                        @endif
+                                    <tr> 
+                                        <th>Url</th> 
+                                        <th>Package</th> 
+                                        <th>Time</th> 
                                         <th>Created Date</th>
-                                        <th>Updated Date</th>
-                                        <th>Action</th>
+                                        <th>Updated Date</th> 
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($tasksAccepted as $task)
-                                    <tr>
-                                        <td>
-                                            <div class="chip">
-                                                <img src="https://ui-avatars.com/api/?background=273146&color=fff&size=128&name={{$task->title}}" alt="Contact Person"> {{ $task->title }}
-                                            </div>
-                                        </td>
-                                        <td title="{{$task->description}}">{{ substr($task->description, 0, 20) }}...</td>
+                                    @foreach($tasksReplied as $task)
+                                    <tr>   
+                                        <td title="{{$task->url}}">{{ substr($task->url, 0, 40) }}...</td> 
                                         <td>
                                             <span class="label label-info">{{$task->package->package_name}}</span>
-                                        </td>
-
-                                        @if(!Auth::user()->isAdmin())
-                                            @if($task->pivot->is_replied == 1)
-                                                <td><span class="label label-warning">Replied</span></td>
-                                            @else
-                                                <td><span class="label label-danger">Not Replied</span></td>
-                                            @endif
-                                            
-                                            @if($task->pivot->is_accepted == 1)
-                                                <td><span class="label label-success">Yes</span></td>
-                                            @else
-                                                <td><span class="label label-danger">No</span></td>
-                                            @endif
-                                        @else
-                                            <td><span class="label label-success">Accepted</span></td>
-                                        @endif
+                                        </td> 
+                                        <td>{{$task->time }}</td>
                                         <td>{{$task->created_at->diffForHumans()}}</td>
-                                        <td>{{$task->updated_at->diffForHumans()}}</td>
-                                        @if(Auth::user()->isAdmin())
-                                            <td width="10%" class="blue-grey-text d-flex text-darken-4 font-medium"> 
-                                                <a href="/task/edit/{{$task->id}}" class="link m-auto align-items-center justify-content-center"><i title="Edit" class="material-icons font-20 m-r-5">edit</i></a>
-                                                <a href="/task/delete/{{$task->id}}" class="link m-auto align-items-center justify-content-center"><i title="Delete" class="material-icons font-20 m-r-5">delete</i></a>
-                                                <a href="{{route('task.showReply',$task->id)}}" class="link m-auto align-items-center justify-content-center"><i title="View Replies" class="fas fa-eye"></i></a>
-                                            </td>
-                                        @else
-                                            <td class="blue-grey-text d-flex text-darken-4 font-medium"> 
-                                                @if($task->pivot->is_accepted == 0)
-                                                    <a href="{{route('task.addreply',$task->id)}}" class="waves-effect waves-light btn blue">Add Reply</a>
-                                                   
-                                                @endif
-                                                @if($task->pivot->is_replied == 1)
-                                                    <a href="{{route('task.showReply',$task->id)}}" class="waves-effect waves-light btn green m-l-5">View Replies</a>
-                                                    
-                                                @endif
-                                            </td>
-                                        @endif
+                                        <td>{{$task->updated_at->diffForHumans()}}</td> 
                                     </tr>
                                     @endforeach
                                 </tbody>
-                            </table>
-                            {{ $tasksAccepted->links() }}
-                        </div>
-                    @else
-                        <div class="card p-40 center">
-                            <h4>No Records Found</h4>
-                        </div>
-                    @endif
+                            </table>   
+                        </div> 
                 </div>
-                @endif
+                @endif 
             </div>
         </div>
     </div>

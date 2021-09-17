@@ -62,12 +62,12 @@ Route::get('/package/send/{packageID}', "PackageController@sendTask")->name('pac
 Route::get('/my-packages', "PackageController@myPackages")->name('packages.myPackages');
 
 Route::get('/tasks/{pacakgeID?}', 'TaskController@index')->name('tasks');
-Route::get('/task/add', 'TaskController@add')->name('addtask');
+// Route::get('/task/add', 'TaskController@add')->name('addtask');
 Route::post('/tasks/upload/sheet', 'TaskController@uploadSheet')->name('uploadSheet');
 Route::post('/task/taskReply/{key}', 'TaskController@saveReply')->name('Reply.save');
 Route::get('/task/taskReply/{taskID}', 'TaskController@addReply')->name('task.addreply'); 
 Route::get('/task/showReply/{taskID}', 'TaskController@showReply')->name('task.showReply');
-Route::post('/task/add', 'TaskController@save');
+// Route::post('/task/add', 'TaskController@save');
 Route::get('/task/edit/{task}', 'TaskController@edit');
 Route::get('/task/accept/{taskID}/{userID}/{packageID}/{id}', 'TaskController@accept');
 Route::get('/task/reject/{taskID}/{userID}/{packageID}', 'TaskController@reject');

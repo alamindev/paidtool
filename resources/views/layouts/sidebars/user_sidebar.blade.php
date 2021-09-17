@@ -11,9 +11,9 @@
                 <li>
                     <a href="{{route('tasks')}}" class="collapsible-header"><i class="material-icons">format_list_bulleted</i><span class="hide-menu">Tasks</span></a>
                 </li>
-                <li>
+                <!-- <li>
                     <a href="{{route('tickets')}}" class="collapsible-header"><i class="material-icons">bookmark_border</i><span class="hide-menu">Support Ticket</span></a>
-                </li>
+                </li> -->
                 <li>
                 <a href="{{route('withdrawls')}}" class="collapsible-header"><i class="material-icons">account_balance_wallet</i><span class="hide-menu">Withdrawls</span></a>
                 </li>

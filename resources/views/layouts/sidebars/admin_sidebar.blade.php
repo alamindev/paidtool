@@ -10,16 +10,13 @@
                 </li>
                 <li>
                     <a href="{{route('tasks')}}" class="collapsible-header"><i class="material-icons">format_list_bulleted</i><span class="hide-menu">Tasks</span></a>
-                </li>
-                <li>
-                    <a href="{{route('addtask')}}" class="collapsible-header"><i class="material-icons">add_to_photos</i><span class="hide-menu">Add Task</span></a>
-                </li>
+                </li> 
                 <li>
                     <a href="{{route('addurltask')}}" class="collapsible-header"><i class="material-icons">add_to_photos</i><span class="hide-menu">Add Url Task</span></a>
                 </li>
-                <li>
+                <!-- <li>
                 <a href="{{route('tickets')}}" class="collapsible-header"><i class="material-icons">bookmark_border</i><span class="hide-menu">Ticket List</span></a>
-                </li>
+                </li> -->
                 <li>
                 <a href="{{route('users')}}" class="collapsible-header"><i class="material-icons">supervisor_account</i><span class="hide-menu">Users</span></a>
                 </li>

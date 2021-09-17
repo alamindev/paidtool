@@ -23,6 +23,7 @@ class TaskController extends Controller
 
     public function index($id = "")
     {
+        $tasks = [];
         if (Auth::user()->isAdmin()) {
             if (!$id) {
                 $tasksNotSent  = Task::whereHas("package")->where("is_sent", 0)->Latest()->Paginate(15);
@@ -34,6 +35,7 @@ class TaskController extends Controller
 
                 $tasksAccepted = Task::whereHas("package")
                     ->whereHas("assignedTasksAccepted")->Paginate(15);
+                    $tasks = Task::latest()->paginate(15);
             } else {
                 $tasksNotSent  = Task::whereHas("package")->where("package_id", $id)->where("is_sent", 0)->Latest()->Paginate(15);
                 $tasksSent     = Task::whereHas("package")->where("package_id", $id)->where("is_sent", 1)->Latest()->Paginate(15);
@@ -43,6 +45,7 @@ class TaskController extends Controller
                 $tasksAccepted = Task::whereHas("package")->where("package_id", $id)->whereHas("assignedTasks", function ($query) {
                     $query->where("is_accepted", 0);
                 })->Latest()->Paginate(15);
+                 $tasks = Task::latest()->paginate(15);
             }
         } else {
             if (!$id) {
@@ -60,7 +63,7 @@ class TaskController extends Controller
             }
         }
 
-        return view("task.index", compact("tasksNotSent", "tasksSent", "tasksReplied", "tasksAccepted"));
+        return view("task.index", compact("tasksNotSent", "tasksSent", "tasksReplied", "tasksAccepted", 'tasks'));
     }
 
     public function add()
@@ -77,7 +80,7 @@ class TaskController extends Controller
     }
 
     public function saveUrlTask(Request $request)
-    {
+    { 
         $request->validate([ 
             'url' => 'required',  
             'time' => 'required',  
