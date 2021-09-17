@@ -1,0 +1,67 @@
+.m-auto {
+    margin: auto;
+}
+
+.alert {
+    position: relative;
+    padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.text-white {
+    color: white;
+}
+
+.chat--room-parent {
+    padding-right: 20px;
+}
+
+.chat--room-btn {
+    padding: 8px 20px;
+    background: red;
+    color: white !important;
+    border-radius: 10px;
+    line-height: 20px !important;
+    font-weight: bold;
+}
+
+.chat--room-btn:hover {
+    background: rgb(218, 6, 6) !important;
+}
+
+.chat-btn-main {
+    display: flex;
+}
+
+.visit--url {
+    padding: 10px 15px;
+    background: #FF7615;
+    display: flex;
+    justify-content: center;
+}
+
+.visit--url p {
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.embed-responsive-item {
+    width: 100%;
+    height: 80vh;
+}
